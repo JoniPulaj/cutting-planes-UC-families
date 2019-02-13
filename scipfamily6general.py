@@ -10,7 +10,7 @@ import scipy.io
 import re
 from copy import deepcopy
 
-
+# generate power set
 def allsets():
     allsets=[]
     for a in range(0,2):
@@ -22,7 +22,7 @@ def allsets():
                             l=[a,b,c,d,e,f]
                             allsets.insert(0,l)
     return allsets
-
+# auxilliary function for writing  and editing files 
 def makedict(n):
     oldstr = []
     newstr = []
@@ -50,7 +50,7 @@ def makedict(n):
     a = dict((el,en) for (el,en) in mydict)
     print a
     return a
-
+# auxilliary function for writing and editing files
 def multiple_replace(dict, text):
   # Create a regular expression  from the dictionary keys
   regex = re.compile("(%s)" % "|".join(map(re.escape, dict.keys())))
@@ -58,13 +58,13 @@ def multiple_replace(dict, text):
   # For each match, look-up corresponding value in dictionary
   return regex.sub(lambda mo: dict[mo.string[mo.start():mo.end()]], text) 
 
-
+# auxilliary function for writing and editing files
 def makelatex(n):
     with open("morriszero.ilp") as text:
          new_text = multiple_replace(makedict(n), text.read())
     with open("notes2.txt", "w") as result:
          result.write(new_text)
-
+# auxilliary function for writing and editing files
 def makedictbeam():
     oldstr = []
     newstr = []
@@ -75,7 +75,7 @@ def makedictbeam():
     return a
 
 
-
+# auxilliary function for writing and editing files
 def makematrix():
     with open("change.txt") as text:
          new_text = multiple_replace(makedictbeam(), text.read())
@@ -84,7 +84,7 @@ def makematrix():
 
     
 
-    
+# generating the integer weight vector, i.e., coefficients for WV inequality 
 def makeweightint(c):
     l=[x for x in allsets()]
     w = [round(x) for x in c]
@@ -104,7 +104,7 @@ def makeweightint(c):
         print sum(w[x] for x in neg)
         makeweight.append(sum([w[x] for x in pos])-sum(w[x] for x in neg))
     return makeweight
-
+# make the objective function
 def makeobj(c):
     l=[x for x in allsets()]
     cr = [Fraction(x).limit_denominator() for x in c]
@@ -119,7 +119,7 @@ def makeobj(c):
                plusw=plusw + w[j]
         makeweight.append(multi-plusw)
     return makeweight
-
+# make coefficients
 def makeccoff(r):
     l=[x for x in allsets()]
     makecoeff=[0]*6
@@ -164,7 +164,7 @@ def constraints():
             if k != i:
                constraints.append([i+1,j+1,k+1])
     return constraints
-
+# making list of uniform n-sets
 def makenset(n):
     l=[x for x in allsets()]
     makenset=[]
@@ -181,7 +181,7 @@ def makenseti(n):
            makenseti.insert(0,l.index(elements))
     return makenseti
 
-
+# auxilliary function for writing and editing files
 def writingfunctionc(elist):
      f = open("writematrix", "w")
      for i in range(len(elist)+1):
@@ -199,7 +199,7 @@ def writingfunctionc(elist):
                 f.write(str(elist[k][j])+"& ")
              else:
                 f.write(str(elist[k+1][j])+"\\\ \n")
-
+# auxilliary function for writing and editing files
 def writingfunctionall(elist,listc):
      f = open("writematrix", "w")
      for i in range(len(elist)+1):
@@ -224,7 +224,7 @@ def writingfunctionall(elist,listc):
                 f.write(str(elist[k+1][j])+"\\\ \n")
 
 
-
+# auxilliary function for writing and editing files
 def writingfunction(elist):
      ar=np.array(elist)
      ar=ar.T.tolist()
